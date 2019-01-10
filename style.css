@@ -1,0 +1,12 @@
+td {
+    border : 1px solid black;
+}
+.titre_colonnes{
+    color: blue;
+    font-size: 25px;
+}
+
+.zoneContenu{
+    height: auto;
+    width: 20%;
+}
