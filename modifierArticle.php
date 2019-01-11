@@ -1,8 +1,6 @@
-
 <?php
+
 require_once 'connexionbdd.php';
-
-
 if (!empty($_POST)){
     $result = $pdo->prepare('UPDATE articles SET artTitre = :artTitre, artContenu = :artContenu WHERE idarticle = :idarticle');
     $result->execute([
@@ -21,6 +19,7 @@ else {
 }
 ?>
 <link rel="stylesheet" href="style.css">
+
 <form action="modifierArticle.php" method="post">
 
     <input type="text" name="artTitre" value="<?= $article['artTitre']?>"><br>

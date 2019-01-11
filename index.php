@@ -1,6 +1,7 @@
 <?php
 require_once 'connexionbdd.php';
 if (!empty($_POST)){
+    require_once 'verification.php';
     $result = $pdo->query('SELECT * FROM articles');
     $req = $pdo->prepare('INSERT INTO articles(artTitre, artContenu, artDate) VALUES (:titre, :contenu, NOW())');
     $req->execute([
@@ -14,21 +15,30 @@ if (!empty($_POST)){
 
 ?>
 
+
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title>aticles</title>
+    <title>articles</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <?php
+    session_start();
+    if (isset($_SESSION['idutilisateur'])) {
+        ?>
+        <p>Bienvenue <?= $_SESSION['utiLogin'] ?> !</p>
+        <p><a href="deconnexion.php">Se déconnecter</a></p>
+        <form class="articles" action="index.php" method="post">
+            <input type="text" name="artTitre" placeholder="Titre" required><br/>
+            <textarea name="artContenu" rows="8" cols="80" placeholder="Contenu" required></textarea> <br/>
 
-    <form class="articles" action="index.php" method="post">
-        <input type="text" name="artTitre" placeholder="Titre" required><br/>
-        <textarea name="artContenu" rows="8" cols="80" placeholder="Contenu" required></textarea> <br/>
-
-        <input type="submit" value="Envoyer">
-    </br>
+            <input type="submit" value="Envoyer">
+        </br>
+    <?php } else {?>
+        <p><a href="connexion.php">Se connecter</a></p>
+    <?php }?>
 </br>
 </form>
 <table>
@@ -50,14 +60,14 @@ if (!empty($_POST)){
             <tr>
                 <td><?= $article['artTitre']?></td>
                 <td><?= date('d/m/Y à H:i:s', strtotime($article['artDate']))?>
-                        <td><a href="afficheArticle.php?id=<?= $article['idarticle'] ?>">voir</a></td></br>
+                    <td><a href="afficheArticle.php?id=<?= $article['idarticle'] ?>">voir</a></td></br>
 
 
 
-                    </tr>
-                </tbody>
-            <?php } ?>
-        </table>
+                </tr>
+            </tbody>
+        <?php } ?>
+    </table>
 
-    </body>
-    </html>
+</body>
+</html>
